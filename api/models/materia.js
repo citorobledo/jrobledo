@@ -4,8 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     nombre: DataTypes.STRING,
     id_carrera: DataTypes.INTEGER
   }, {});
-  materia.associate = function(models) {
-    // associations can be defined here
-  };
+  //materia.associate = function(models) {
+  //  // associations can be defined here
+  //};
   return materia;
 };
