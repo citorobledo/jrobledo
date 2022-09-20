@@ -14,8 +14,8 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   models.materia
-    .create({ nombre: req.body.nombre })
-    .then(materia => res.status(201).send({ id: materia.id }))
+    .create({ nombre: req.body.nombre, id_materia: req.body.id_materia })
+    .then(materia => res.status(201).send({ id: materia.id, nombre: materia.nombre, id_materia: materia.id_materia }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
         res.status(400).send('Bad request: existe otra materia con el mismo nombre')
