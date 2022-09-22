@@ -6,7 +6,9 @@ router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
   models.materia
     .findAll({
-      attributes: ["id", "nombre", "id_carrera"]
+      attributes: ["id", "nombre"],
+       //se agrega la asociacion a carrera:
+       include:[{as:'Carrera-Relacionada', model:models.carrera, attributes: ["id","nombre"]}]
     })
     .then(materia => res.send(materia))
     .catch(() => res.sendStatus(500));
