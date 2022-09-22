@@ -6,7 +6,7 @@ router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
   models.materia
     .findAll({
-      attributes: ["id", "nombre", "id_materia"]
+      attributes: ["id", "nombre", "id_carrera"]
     })
     .then(materia => res.send(materia))
     .catch(() => res.sendStatus(500));
@@ -14,8 +14,8 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   models.materia
-    .create({ nombre: req.body.nombre, id_materia: req.body.id_materia })
-    .then(materia => res.status(201).send({ id: materia.id, nombre: materia.nombre, id_materia: materia.id_materia }))
+    .create({ nombre: req.body.nombre, id_carrera: req.body.id_carrera })
+    .then(materia => res.status(201).send({ id: materia.id, nombre: materia.nombre, id_carrera: materia.id_carrera }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
         res.status(400).send('Bad request: existe otra materia con el mismo nombre')
@@ -30,7 +30,7 @@ router.post("/", (req, res) => {
 const findMateria = (id, { onSuccess, onNotFound, onError }) => {
   models.materia
     .findOne({
-      attributes: ["id", "nombre", "id_materia"],
+      attributes: ["id", "nombre", "id_carrera"],
       where: { id }
     })
     .then(materia => (materia ? onSuccess(materia) : onNotFound()))
