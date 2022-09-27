@@ -8,17 +8,17 @@ router.get("/", (req, res) => {
     .findAll({
       attributes: ["id"]
     })
-    .then(matriula => res.send(matriula))
+    .then(matricula => res.send(matricula))
     .catch(() => res.sendStatus(500));
 });
 
 router.post("/", (req, res) => {
-  models.matriula
+  models.matricula
     .create({ nombre: req.body.nombre })
-    .then(matriula => res.status(201).send({ id: matriula.id }))
+    .then(matricula => res.status(201).send({ id: matricula.id }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
-        res.status(400).send('Bad request: existe otra matriula con el mismo nombre')
+        res.status(400).send('Bad request: existe otra matricula con el mismo nombre')
       }
       else {
         console.log(`Error al intentar insertar en la base de datos: ${error}`)
@@ -27,39 +27,39 @@ router.post("/", (req, res) => {
     });
 });
 
-const findmatriula = (id, { onSuccess, onNotFound, onError }) => {
-  models.matriula
+const findmatricula = (id, { onSuccess, onNotFound, onError }) => {
+  models.matricula
     .findOne({
       attributes: ["id", "nombre"],
       where: { id }
     })
-    .then(matriula => (matriula ? onSuccess(matriula) : onNotFound()))
+    .then(matricula => (matricula ? onSuccess(matricula) : onNotFound()))
     .catch(() => onError());
 };
 
 router.get("/:id", (req, res) => {
-  findmatriula(req.params.id, {
-    onSuccess: matriula => res.send(matriula),
+  findmatricula(req.params.id, {
+    onSuccess: matricula => res.send(matricula),
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)
   });
 });
 
 router.put("/:id", (req, res) => {
-  const onSuccess = matriula =>
-    matriula
+  const onSuccess = matricula =>
+    matricula
       .update({ nombre: req.body.nombre }, { fields: ["nombre"] })
       .then(() => res.sendStatus(200))
       .catch(error => {
         if (error == "SequelizeUniqueConstraintError: Validation error") {
-          res.status(400).send('Bad request: existe otra matriula con el mismo nombre')
+          res.status(400).send('Bad request: existe otra matricula con el mismo nombre')
         }
         else {
           console.log(`Error al intentar actualizar la base de datos: ${error}`)
           res.sendStatus(500)
         }
       });
-    findmatriula(req.params.id, {
+    findmatricula(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)
@@ -67,12 +67,12 @@ router.put("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
-  const onSuccess = matriula =>
-    matriula
+  const onSuccess = matricula =>
+    matricula
       .destroy()
       .then(() => res.sendStatus(200))
       .catch(() => res.sendStatus(500));
-  findmatriula(req.params.id, {
+  findmatricula(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)
