@@ -18,8 +18,15 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   models.profesor
-    .create({ nombre: req.body.nombre })
-    .then(profesor => res.status(201).send({ id: profesor.id, nombre: profesor.nombre }))
+    .create({
+      nombre: req.body.nombre,
+      apellido: req.body.apellido
+    })
+    .then(profesor => res.status(201).send({
+      id: profesor.id,
+      nombre: profesor.nombre,
+      apellido: profesor.apellido
+    }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
         res.status(400).send('Bad request: existe otra profesor con el mismo nombre')
@@ -34,7 +41,10 @@ router.post("/", (req, res) => {
 const findprofesor = (id, { onSuccess, onNotFound, onError }) => {
   models.profesor
     .findOne({
-      attributes: ["id", "nombre"],
+      attributes: [
+        "id",
+        "nombre",
+        "apellido"],
       where: { id }
     })
     .then(profesor => (profesor ? onSuccess(profesor) : onNotFound()))
