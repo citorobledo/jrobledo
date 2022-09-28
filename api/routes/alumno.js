@@ -6,7 +6,10 @@ router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
   models.alumno
     .findAll({
-      attributes: ["id", "nombre", "apellido"]
+      attributes: [
+        "id", 
+        "nombre", 
+        "apellido"]
     })
     .then(alumno => res.send(alumno))
     .catch(() => res.sendStatus(500));
@@ -14,8 +17,15 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   models.alumno
-    .create({ nombre: req.body.nombre, apellido: req.body.apellido })
-    .then(alumno => res.status(201).send({ id: alumno.id, nombre: alumno.nombre, apellido: alumno.apellido }))
+    .create({
+      nombre: req.body.nombre,
+      apellido: req.body.apellido
+    })
+    .then(alumno => res.status(201).send({
+      id: alumno.id,
+      nombre: alumno.nombre,
+      apellido: alumno.apellido
+    }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
         res.status(400).send('Bad request: existe otra alumno con el mismo nombre')
@@ -30,7 +40,10 @@ router.post("/", (req, res) => {
 const findalumno = (id, { onSuccess, onNotFound, onError }) => {
   models.alumno
     .findOne({
-      attributes: ["id", "nombre", "apellido"],
+      attributes: [
+        "id",
+        "nombre",
+        "apellido"],
       where: { id }
     })
     .then(alumno => (alumno ? onSuccess(alumno) : onNotFound()))
@@ -48,7 +61,14 @@ router.get("/:id", (req, res) => {
 router.put("/:id", (req, res) => {
   const onSuccess = alumno =>
     alumno
-      .update({ nombre: req.body.nombre, apellido: req.body.apellido }, { fields: ["nombre", "apellido"] })
+      .update({
+        nombre: req.body.nombre,
+        apellido: req.body.apellido
+      }, {
+        fields: [
+          "nombre",
+          "apellido"]
+      })
       .then(() => res.sendStatus(200))
       .catch(error => {
         if (error == "SequelizeUniqueConstraintError: Validation error") {

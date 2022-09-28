@@ -6,7 +6,9 @@ router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
   models.carrera
     .findAll({
-      attributes: ["id", "nombre"]
+      attributes: [
+        "id",
+        "nombre"]
     })
     .then(carreras => res.send(carreras))
     .catch(() => res.sendStatus(500));
@@ -14,8 +16,13 @@ router.get("/", (req, res) => {
 
 router.post("/", (req, res) => {
   models.carrera
-    .create({ nombre: req.body.nombre })
-    .then(carrera => res.status(201).send({ id: carrera.id, nombre: carrera.nombre }))
+    .create({
+      nombre: req.body.nombre
+    })
+    .then(carrera => res.status(201).send({
+      id: carrera.id, 
+      nombre: carrera.nombre
+    }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
         res.status(400).send('Bad request: existe otra carrera con el mismo nombre')
@@ -30,7 +37,9 @@ router.post("/", (req, res) => {
 const findCarrera = (id, { onSuccess, onNotFound, onError }) => {
   models.carrera
     .findOne({
-      attributes: ["id", "nombre"],
+      attributes: [
+        "id",
+        "nombre"],
       where: { id }
     })
     .then(carrera => (carrera ? onSuccess(carrera) : onNotFound()))
