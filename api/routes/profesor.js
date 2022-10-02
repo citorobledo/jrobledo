@@ -10,7 +10,13 @@ router.get("/", (req, res) => {
         "id",
         "nombre",
         "apellido"
-      ]
+      ],
+      //se agrega la asociacion a materia:
+      include: [{
+        as: 'Materia-Relacionada',// nombre de la relacion en el modelo
+        model: models.materia, // modelo al que pertenece la asociacion (materia)
+        attributes: ["id", "nombre"]
+      }]
     })
     .then(profesor => res.send(profesor))
     .catch(() => res.sendStatus(500));
