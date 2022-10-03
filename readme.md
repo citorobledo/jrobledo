@@ -1,6 +1,6 @@
 # **pasos semana a semana para la realizacion de TP**
 
-## Titulo: TP Persistencia
+## Titulo: TP Estrategias de Persistencia
 ## Author: Javier Robledo
 
 ### semana 5 - 6:
@@ -113,6 +113,27 @@ npx sequelize-cli model:generate --name profesor --attributes id_materia:integer
 npx sequelize db:migrate
 
 ```
+### TIPO DE RELACIONES SEQUELIZE:
+const A = sequelize.define('A', /* ... */);
+const B = sequelize.define('B', /* ... */);
+
+A.hasOne(B); // A HasOne B (con la clave foranea en la tabla B)
+A.belongsTo(B); // A BelongsTo B (con la clave foranea en A)
+A.hasMany(B); // A HasMany B
+A.belongsToMany(B, { through: 'C' }); // A BelongsToMany B through the junction table C
+
+El orden en que se define la asociación es relevante. En otras palabras, el orden importa, para los cuatro casos. En todos los ejemplos anteriores, "A" se llama el modelo fuente y "B" se llama el modelo objetivo . Esta terminología es importante.
+
+las asociaciones A.hasOne(B)  significa que existe una relación uno a uno entre A y B, con la clave FORANEA definida en el modelo de destino ( B).
+
+las asociaciones A.belongsTo(B)  significa que existe una relación uno a uno entre A y B, con la clave FORANEA definida en el modelo fuente ( A).
+
+las asociaciones A.hasMany(B)  significa que existe una relación de uno a muchos entre A y B, con la clave FORANEA definida en el modelo de destino ( B).
+
+Estas tres llamadas harán que Sequelize agregue automáticamente claves foráneas a los modelos apropiados (a menos que ya estén presentes).
+
+las asociaciones A.belongsToMany(B, { through: 'C' })  significa que existe una relación de muchos a muchos entre A y B, usando la tabla C como tabla de unión , que tendrá las claves foráneas ( A_Id y B_Id, por ejemplo). Sequelize creará automáticamente este modelo C. (a menos que ya exista) y defina las claves externas apropiadas en él. 
+
 ### COMANDOS POST-MAN:
 ```sh
 - hace un get a la tabla carrera que en el codigo esta definida como "app.use('/car', carrerasRouter);" en app.js

@@ -13,9 +13,20 @@ router.get("/", (req, res) => {
       ],
       //se agrega la asociacion a materia:
       include: [{
-        as: 'Materia-Relacionada',// nombre de la relacion en el modelo
+        as: 'Materia-dictada',// nombre de la relacion en el modelo
         model: models.materia, // modelo al que pertenece la asociacion (materia)
-        attributes: ["id", "nombre"]
+        attributes: ["id", "nombre"],
+        include: [{
+          as: 'Carrera-Relacionada',// nombre de la relacion en el modelo
+          model: models.carrera, // modelo al que pertenece la asociacion (carrera)
+          attributes: ["id", "nombre"]
+          //,
+          //include: [{
+          //  as: 'alumnos-relacionados',// nombre de la relacion en el modelo
+          //  model: models.alumno, // modelo al que pertenece la asociacion (alumno)
+          //  attributes: ["id", "nombre", "apellido"],
+          //}]
+        }]
       }]
     })
     .then(profesor => res.send(profesor))

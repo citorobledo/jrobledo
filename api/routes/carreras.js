@@ -15,10 +15,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/", (req, res) => {
-  models.carrera
-    .create({
-      nombre: req.body.nombre
-    })
+  models.carrera.create({nombre: req.body.nombre})
     .then(carrera => res.status(201).send({
       id: carrera.id, 
       nombre: carrera.nombre

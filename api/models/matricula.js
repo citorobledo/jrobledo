@@ -7,7 +7,12 @@ module.exports = (sequelize, DataTypes) => {
     id_carrera: DataTypes.INTEGER
   }, {});
   matricula.associate = function(models) {
-    // associations can be defined here
+  // associations can be defined here
+  //  models.carrera.belongsToMany(models.materia, { through: 'ActorMovies' });
+    matricula.belongsTo(models.alumno, {
+      as: 'Alumno-Relacionado',
+      foreignKey: 'id_alumno',
+    });
   };
   return matricula;
 };

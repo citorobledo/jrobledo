@@ -12,7 +12,12 @@ router.get("/", (req, res) => {
         "id_profesor", 
         "id_materia", 
         "id_carrera"
-      ]
+      ],
+      include: [{
+        as: 'Alumno-Relacionado',
+        model: models.alumno,
+        attributes: ["id", "nombre", "apellido"]
+      }],
     })
       .then(matricula => res.send(matricula))
         .catch(() => res.sendStatus(500));

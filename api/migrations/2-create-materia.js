@@ -7,13 +7,14 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER
+      }, 
+      id_carrera: {
+        type: Sequelize.INTEGER
       },
       nombre: {
         type: Sequelize.STRING
       },
-      id_carrera: {
-        type: Sequelize.INTEGER
-      },
+     
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -6,6 +6,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   alumno.associate = function(models) {
     // associations can be defined here
+    alumno.belongsTo(models.materia, {// se agrega la asociacion a materia
+      as: 'Materia-cursada',
+      foreignKey: 'id_materia'
+      
+    })
   };
   return alumno;
 };
