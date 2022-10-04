@@ -8,7 +8,10 @@ router.get("/", (req, res) => {
     .findAll({
       attributes: [
         "id",
-        "nombre"]
+        "nombre"],
+  // se agrega la asociacion a la consulta en modelo carrera
+        include:[{as:'materias de la carrera', model:models.materia, attributes: ["nombre"]}]
+
     })
     .then(carreras => res.send(carreras))
     .catch(() => res.sendStatus(500));
