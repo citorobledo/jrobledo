@@ -1,16 +1,12 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const materia = sequelize.define('materia', {
-    nombre: DataTypes.STRING,
-    id_carrera: DataTypes.INTEGER
+    nombre: DataTypes.STRING
   }, {});
   materia.associate = function (models) {
-    //asociacion a carrera (pertenece a:)
-    materia.belongsTo(models.carrera,// modelo al que pertenece la asociacion (carrera)
-      {
-        as: 'Carrera-Relacionada',  // nombre de mi relacion
-        foreignKey: 'id_carrera'     // campo con el que voy a igualar
-      })
+    materia.hasMany(models.matricula,{  // asociacion a la tabla matricula (tiene muchas)
+      foreignKey: 'id_materia'          //clave foranea de la tabla matricula
+      });
   };
   return materia;
 };

@@ -6,21 +6,10 @@ router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
   models.matricula
     .findAll({
-      attributes: [
-        "id", 
-        "id_alumno", 
-        "id_profesor", 
-        "id_materia", 
-        "id_carrera"
-      ],
-      include: [{
-        as: 'Alumno-Relacionado',
-        model: models.alumno,
-        attributes: ["id", "nombre", "apellido"]
-      }],
+      attributes: ["id"]
     })
-      .then(matricula => res.send(matricula))
-        .catch(() => res.sendStatus(500));
+    .then(matricula => res.send(matricula))
+    .catch(() => res.sendStatus(500));
 });
 
 router.post("/", (req, res) => {
@@ -99,12 +88,12 @@ router.delete("/:id", (req, res) => {
   const onSuccess = matricula =>
     matricula
       .destroy()
-        .then(() => res.sendStatus(200))
-          .catch(() => res.sendStatus(500));
+      .then(() => res.sendStatus(200))
+      .catch(() => res.sendStatus(500));
   findmatricula(req.params.id, {
     onSuccess,
-      onNotFound: () => res.sendStatus(404),
-        onError: () => res.sendStatus(500)
+    onNotFound: () => res.sendStatus(404),
+    onError: () => res.sendStatus(500)
   });
 });
 

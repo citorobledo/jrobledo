@@ -6,14 +6,42 @@ router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
   models.materia
     .findAll({
-      attributes: [
-        "id",
-        "nombre"],
-      //se agrega la asociacion a carrera:
-      include: [{
-        as: 'Carrera-Relacionada',
-        model: models.carrera,
-        attributes: ["id", "nombre"]
+      attributes: ["id", "nombre"],
+    })
+    .then(materia => res.send(materia))
+    .catch(() => res.sendStatus(500));
+});
+
+router.get("/prof", (req, res) => {//trae todos los profesores de la materia
+  console.log("Esto es un mensaje para ver en consola");
+  models.materia
+    .findAll({
+      attributes: ["id", "nombre"],
+       include:[{
+        model:models.matricula, 
+        attributes: ["id_profesor"],
+        include:[{
+          model:models.profesor,
+          attributes: ["nombre", "apellido"],
+       }]
+      }]
+    })
+    .then(materia => res.send(materia))
+    .catch(() => res.sendStatus(500));
+});
+
+router.get("/alum", (req, res) => {//trae todos los alumnos de la materia
+  console.log("Esto es un mensaje para ver en consola");
+  models.materia
+    .findAll({
+      attributes: ["id", "nombre"],
+       include:[{
+        model:models.matricula, 
+        attributes: ["id_alumno"],
+        include:[{
+          model:models.alumno,
+          attributes: ["nombre", "apellido"],
+       }]
       }]
     })
     .then(materia => res.send(materia))

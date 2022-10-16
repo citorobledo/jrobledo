@@ -2,30 +2,44 @@ var express = require("express");
 var router = express.Router();
 var models = require("../models");
 
-router.get("/", (req, res) => {
+router.get("/", (req, res) => {//obtener todos los profesores
   console.log("Esto es un mensaje para ver en consola");
   models.profesor
     .findAll({
-      attributes: [
-        "id",
-        "nombre",
-        "apellido"
-      ],
-      //se agrega la asociacion a materia:
+      attributes: ["id", "nombre", "apellido"],
+    })
+    .then(profesor => res.send(profesor))
+    .catch(() => res.sendStatus(500));
+});
+
+router.get("/alum", (req, res) => {//obtener todos los alumnos de un profesor
+  console.log("Esto es un mensaje para ver en consola");
+  models.profesor
+    .findAll({
+      attributes: ["id", "nombre"],
       include: [{
-        as: 'Materia-dictada',// nombre de la relacion en el modelo
-        model: models.materia, // modelo al que pertenece la asociacion (materia)
-        attributes: ["id", "nombre"],
+        model: models.matricula,
         include: [{
-          as: 'Carrera-Relacionada',// nombre de la relacion en el modelo
-          model: models.carrera, // modelo al que pertenece la asociacion (carrera)
-          attributes: ["id", "nombre"]
-          //,
-          //include: [{
-          //  as: 'alumnos-relacionados',// nombre de la relacion en el modelo
-          //  model: models.alumno, // modelo al que pertenece la asociacion (alumno)
-          //  attributes: ["id", "nombre", "apellido"],
-          //}]
+          model: models.alumno,
+          attributes: [ "nombre", "apellido"],
+        }]
+      }]
+    })
+    .then(profesor => res.send(profesor))
+    .catch(() => res.sendStatus(500));
+});
+
+router.get("/mat", (req, res) => {//obtener todas las materias de un profesor
+  console.log("Esto es un mensaje para ver en consola");
+  models.profesor
+    .findAll({
+      attributes: ["id", "nombre"],
+      include: [{
+        model: models.matricula,
+        attributes: [ "id_materia"],
+        include: [{
+          model: models.materia,
+          attributes: [ "nombre"],
         }]
       }]
     })

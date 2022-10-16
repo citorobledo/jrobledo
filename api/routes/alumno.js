@@ -6,10 +6,26 @@ router.get("/", (req, res) => {
   console.log("Esto es un mensaje para ver en consola");
   models.alumno
     .findAll({
-      attributes: [
-        "id", 
-        "nombre", 
-        "apellido"]
+      attributes: ["id", "nombre"],
+    })
+    .then(alumno => res.send(alumno))
+    .catch(() => res.sendStatus(500));
+});
+
+router.get("/prof", (req, res) => {           // este get trae los profesores de un alumno
+  console.log("Esto es un mensaje para ver en consola");
+  models.alumno
+    .findAll({
+      attributes: ["id", "nombre"],           //muestra el id y el nombre del alumno
+      include: [{
+        model: models.matricula,              //incluye la tabla matricula
+        attributes: ["id_alumno"],            //muestra solo el id del alumno
+        include: [{                
+          attributes: ["nombre", 'apellido'], //incluye la tabla profesor
+          model: models.profesor,             //muestra el nombre y el apellido del profesor
+        }]
+      }]
+
     })
     .then(alumno => res.send(alumno))
     .catch(() => res.sendStatus(500));

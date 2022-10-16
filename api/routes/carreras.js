@@ -2,16 +2,29 @@ var express = require("express");
 var router = express.Router();
 var models = require("../models");
 
-router.get("/", (req, res) => {
+router.get("/", (req, res) => {// trae todas las carreras
   console.log("Esto es un mensaje para ver en consola");
   models.carrera
     .findAll({
-      attributes: [
-        "id",
-        "nombre"],
-  // se agrega la asociacion a la consulta en modelo carrera
-        include:[{as:'materias de la carrera', model:models.materia, attributes: ["nombre"]}]
+      attributes: ["id", "nombre"],
+    })
+    .then(carreras => res.send(carreras))
+    .catch(() => res.sendStatus(500));
+});
 
+router.get("/mat", (req, res) => {// trae todas las materias de la carrera
+  console.log("Esto es un mensaje para ver en consola");
+  models.carrera
+    .findAll({
+      attributes: ["id", "nombre"],
+      include: [{
+        model: models.matricula,
+        attributes: ["id_carrera"],
+        include: [{
+          attributes: ["nombre"],
+          model: models.materia,
+        }]
+      }]
     })
     .then(carreras => res.send(carreras))
     .catch(() => res.sendStatus(500));
