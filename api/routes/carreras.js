@@ -38,7 +38,7 @@ router.post("/", (req, res) => {
     }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
-        res.status(400).send('Bad request: existe otra carrera con el mismo nombre')
+        res.status(400).send('Bad request: existe otra carrera con el mismo dato')
       }
       else {
         console.log(`Error al intentar insertar en la base de datos: ${error}`)
