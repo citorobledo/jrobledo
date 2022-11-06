@@ -2,37 +2,6 @@ var express = require("express");
 var router = express.Router();
 var models = require("../models");
 
-router.get("/", (req, res) => {
-  console.log("Esto es un mensaje para ver en consola");
-  models.matricula
-    .findAll({
-      attributes: ["id"]
-    })
-    .then(matricula => res.send(matricula))
-    .catch(() => res.sendStatus(500));
-});
-
-router.post("/", (req, res) => {
-  
-  models.matricula
-    .create({ 
-      id_alumno: req.body.id_alumno, 
-      id_profesor: req.body.id_profesor, 
-      id_materia: req.body.id_materia, 
-      id_carrera: req.body.id_carrera 
-    })
-    .then(matricula => res.status(201).send({ id: matricula.id }))
-    .catch(error => {
-      if (error == "SequelizeUniqueConstraintError: Validation error") {
-        res.status(400).send('Bad request: existe otra matricula con el mismo nombre')
-      }
-      else {
-        console.log(`Error al intentar insertar en la base de datos: ${error}`)
-        res.sendStatus(500)
-      }
-    });
-});
-
 const findmatricula = (id, { onSuccess, onNotFound, onError }) => {
   models.matricula
     .findOne({
@@ -49,15 +18,6 @@ const findmatricula = (id, { onSuccess, onNotFound, onError }) => {
         .catch(() => onError());
 };
 
-
-router.get("/:id", (req, res) => {
-  findmatricula(req.params.id, {
-    onSuccess: matricula => res.send(matricula),
-    onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
-  });
-});
-
 const findAlumno = ( dni, { onSuccess, onNotFound, onError }) => {// funcion para buscar un alumno por dni
   models.alumno // busca en la tabla alumno
     .findOne({// busca un alumno
@@ -73,16 +33,75 @@ const findAlumno = ( dni, { onSuccess, onNotFound, onError }) => {// funcion par
         .catch(() => onError());// si hay un error ejecuta onError
 };
 
+router.get("/", (req, res) => {
+  console.log("Petición GET a /matr");
+  models.matricula
+    .findAll({
+      attributes: ["id"]
+    })
+    .then(matricula => res.send(matricula))
+    .catch(() => res.sendStatus(500));
+});
+
+router.get("/:id", (req, res) => {
+  console.log("Petición GET a /matr/:id");
+  findmatricula(req.params.id, {
+    onSuccess: matricula => res.send(matricula),
+    onNotFound: () => res.sendStatus(404),
+    onError: () => res.sendStatus(500)
+  });
+});
+
 router.get("/alumn_dni/:dni", (req, res) => {// busca el alumno por dni y devuelve sus datos.
+  console.log("Petición GET a /matr/alumn_dni/:dni");
   findAlumno(req.params.dni, {// se pasa por parametros el dni del alumno
     onSuccess: alumno => res.send(alumno),
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)
   });
 });
-// TODO: implementar un get que devuelva todas las matriculas de un alumno
+
+router.get("/alumn_matr/:dni", (req, res) => { // busca el alumno por dni y devuelve sus matriculas
+  console.log("Petición GET a /matr/alumn_matr/:dni");
+  findAlumno(req.params.dni, {    // busca el alumno por dni y devuelve sus datos.
+    onSuccess: alumno => {        // si encuentra el alumno ejecuta onSuccess
+      models.matricula
+        .findAll({
+          attributes: ["id", "id_alumno", "id_profesor", "id_materia", "id_carrera"],
+          where: { id_alumno: alumno.id }
+        })
+        .then(matricula => res.send(matricula)) // devuelve las matriculas del alumno
+        .catch(() => res.sendStatus(500));      // si hay un error devuelve 500
+    },
+    onNotFound: () => res.sendStatus(404),      // si no encuentra el alumno devuelve 404
+    onError: () => res.sendStatus(500)          // si hay un error devuelve 500
+  });
+});
+
+
+router.post("/", (req, res) => {
+  console.log("Petición POST a /matr");
+  models.matricula
+    .create({ 
+      id_alumno: req.body.id_alumno, 
+      id_profesor: req.body.id_profesor, 
+      id_materia: req.body.id_materia, 
+      id_carrera: req.body.id_carrera 
+    })
+    .then(matricula => res.status(201).send({ id: matricula.id }))
+    .catch(error => {
+      if (error == "SequelizeUniqueConstraintError: Validation error") {
+        res.status(400).send('Bad request: existe otra matricula con mismos datos')
+      }
+      else {
+        console.log(`Error al intentar insertar en la base de datos: ${error}`)
+        res.sendStatus(500)
+      }
+    });
+});
 
 router.put("/:id", (req, res) => { // actualiza los datos de la matricula del id
+  console.log("Peticion PUT en matr/:id");
   const onSuccess = matricula => matricula.update({ //funcion onSuccess que actualiza los datos de la matricula
     id_alumno: req.body.id_alumno, 
     id_profesor: req.body.id_profesor, 
@@ -110,35 +129,8 @@ router.put("/:id", (req, res) => { // actualiza los datos de la matricula del id
   });
 });
 
-router.put("/alumn_dni/:dni", (req, res) => { // actualiza los datos de la matricula del alumno con el dni pasado por parametro
-  const onSuccess = matricula => matricula.update({ // funcion onSuccess que actualiza los datos de la matricula
-    id_alumno: req.params.id, 
-    id_profesor: req.body.id_profesor, 
-    id_materia: req.body.id_materia, 
-    id_carrera: req.body.id_carrera},
-      {fields: [
-        "id_alumno",
-        "id_profesor",
-        "id_materia",
-        "id_carrera"]})
-          .then(() => res.sendStatus(200))
-            .catch(error => {
-              if (error == "SequelizeUniqueConstraintError: Validation error") {
-                res.status(400).send('Bad request: existe otra matricula con el mismo nombre')
-              }
-              else {
-                console.log(`Error al intentar actualizar la base de datos: ${error}`)
-                res.sendStatus(500)
-              }
-            });
-    findAlumno(req.params.dni, {
-    onSuccess,
-    onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
-  });
-});
-
 router.delete("/:id", (req, res) => {
+  console.log("Peticion DELETE en matr/:id");
   const onSuccess = matricula =>
     matricula
       .destroy()

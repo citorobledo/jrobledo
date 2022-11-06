@@ -8,7 +8,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       },
-      id_materia: {
+      dni: {
         type: Sequelize.INTEGER
       },
       nombre: {

@@ -1,60 +1,7 @@
+const utilidades = require ('../utilidades/utilidades.js');
 var express = require("express");
 var router = express.Router();
 var models = require("../models");
-
-router.get("/", (req, res) => {
-  console.log("Esto es un mensaje para ver en consola");
-  models.alumno
-    .findAll({
-      attributes: ["id", "dni", "nombre", "apellido"],
-    })
-    .then(alumno => res.send(alumno))
-    .catch(() => res.sendStatus(500));
-});
-
-router.get("/prof/:dni", (req, res) => {   // este get trae los profesores del alumno con el dni que se le pasa por parametro
-  console.log("Esto es un mensaje para ver en consola");
-  models.alumno
-    .findOne({
-      attributes: ["id", "dni", "nombre", "apellido"],           //muestra el dni y el nombre del alumno
-      where: { dni: req.params.dni },                       //busca el alumno con el id que se le pasa por parametro
-      include: [{
-        model: models.matricula,              //incluye la tabla matricula
-        attributes: ["id_alumno"],            //muestra solo el id del alumno
-        include: [{                
-          attributes: ["nombre", 'apellido'], //incluye la tabla profesor
-          model: models.profesor,             //muestra el nombre y el apellido del profesor
-        }]
-      }]
-
-    })
-    .then(alumno => res.send(alumno))
-    .catch(() => res.sendStatus(500));
-});
-
-router.post("/", (req, res) => {
-  models.alumno
-    .create({
-      dni: req.body.dni,
-      nombre: req.body.nombre,
-      apellido: req.body.apellido
-    })
-    .then(alumno => res.status(201).send({
-      id: alumno.id,
-      dni: alumno.dni,
-      nombre: alumno.nombre,
-      apellido: alumno.apellido
-    }))
-    .catch(error => {
-      if (error == "SequelizeUniqueConstraintError: Validation error") {
-        res.status(400).send('Bad request: existe otra alumno con el mismo nombre')
-      }
-      else {
-        console.log(`Error al intentar insertar en la base de datos: ${error}`)
-        res.sendStatus(500)
-      }
-    });
-});
 
 const findalumno = (id, { onSuccess, onNotFound, onError }) => {
   models.alumno
@@ -70,7 +17,23 @@ const findalumno = (id, { onSuccess, onNotFound, onError }) => {
     .catch(() => onError());
 };
 
+router.get("/", (req, res) => {                             //obtener todos los alumnos con paginacion
+  console.log("Peticion GET recibida en /alumno");
+  models.alumno                                             //busca en la tabla alumno
+    .findAll({
+      attributes: ["id", "dni", "nombre", "apellido"],      //muestra solo los atributos id, dni, nombre y apellido
+      offset: utilidades.getOffset(req.query.pagina, req.query.limite), //offset es el numero de registros que se salta
+      limit: utilidades.reqSino(req.query.limite, 10),      //limit es el numero de registros que muestra
+      order: [                                              // ordeno por apellido y nombre la lista de alumnos de forma ascendente
+        ['apellido', 'ASC'], ['nombre', 'ASC']
+      ]
+    })
+    .then(alumno => res.send(alumno))
+    .catch(() => res.sendStatus(500));
+});
+
 router.get("/:id", (req, res) => {
+  console.log("Peticion GET recibida en /alumno/:id");
   findalumno(req.params.id, {
     onSuccess: alumno => res.send(alumno),
     onNotFound: () => res.sendStatus(404),
@@ -78,7 +41,93 @@ router.get("/:id", (req, res) => {
   });
 });
 
+router.get("/prof/:dni", (req, res) => {   // este get trae los profesores del alumno con el dni que se le pasa por parametro
+  console.log("Peticion GET recibida en /alumno/prof/:dni");
+  models.alumno
+    .findOne({
+      attributes: ["id", "dni", "nombre", "apellido"],   //muestra el dni y el nombre del alumno
+      where: { dni: req.params.dni },                    //busca el alumno con el dni que se le pasa por parametro
+      include: [{
+        model: models.matricula,              //incluye la tabla matricula
+        attributes: ["id_alumno" ],            //muestra solo el id del alumno
+        include: [{                
+          attributes: ["nombre", 'apellido'], //muestra el nombre y el apellido del profesor
+          model: models.profesor,             //incluye la tabla profesor
+        }]
+      }]
+
+    })
+    .then(alumno => res.send(alumno))
+    .catch(() => res.sendStatus(500));
+});
+
+router.get("/mat/:dni", (req, res) => {   // este get trae las materias del alumno con el dni que se le pasa por parametro
+  console.log("Peticion GET recibida en /alumno/mat/:dni");
+  models.alumno
+    .findOne({
+      attributes: ["id", "dni", "nombre", "apellido"],   //muestra el dni y el nombre del alumno
+      where: { dni: req.params.dni },                    //busca el alumno con el dni que se le pasa por parametro
+      include: [{
+        model: models.matricula,              //incluye la tabla matricula
+        attributes: ["id_alumno" ],            //muestra solo el id del alumno
+        include: [{                
+          attributes: ["nombre"], //muestra el nombre de la materia
+          model: models.materia,             //incluye la tabla materia
+        }]
+      }]
+
+    })
+    .then(alumno => res.send(alumno))
+    .catch(() => res.sendStatus(500));
+});
+
+router.get("/car/:dni", (req, res) => {   // este get trae las carreras del alumno con el dni que se le pasa por parametro
+  console.log("Peticion GET recibida en /alumno/car/:dni");
+  models.alumno
+    .findOne({
+      attributes: ["id", "dni", "nombre", "apellido"],   //muestra el dni y el nombre del alumno
+      where: { dni: req.params.dni },                    //busca el alumno con el dni que se le pasa por parametro
+      include: [{
+        model: models.matricula,              //incluye la tabla matricula
+        attributes: ["id_alumno" ],            //muestra solo el id del alumno
+        include: [{                
+          attributes: ["nombre"], //muestra el nombre de la materia
+          model: models.carrera,             //incluye la tabla carrera
+        }]
+      }]
+
+    })
+    .then(alumno => res.send(alumno))
+    .catch(() => res.sendStatus(500));
+});
+
+router.post("/", (req, res) => {
+  console.log("Peticion POST recibida en /alumno");
+  models.alumno
+    .create({
+      dni: req.body.dni,
+      nombre: req.body.nombre,
+      apellido: req.body.apellido
+    })
+    .then(alumno => res.status(201).send({
+      id: alumno.id,
+      dni: alumno.dni,
+      nombre: alumno.nombre,
+      apellido: alumno.apellido
+    }))
+    .catch(error => {
+      if (error == "SequelizeUniqueConstraintError: Validation error") {
+        res.status(400).send('Bad request: existe otro alumno con datos iguales')
+      }
+      else {
+        console.log(`Error al intentar insertar en la base de datos: ${error}`)
+        res.sendStatus(500)
+      }
+    });
+});
+
 router.put("/:id", (req, res) => {
+  console.log("Peticion PUT recibida en /alumno/:id");
   const onSuccess = alumno =>
     alumno
       .update({
@@ -109,6 +158,7 @@ router.put("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
+  console.log("Peticion DELETE recibida en /alumno/:id");
   const onSuccess = alumno =>
     alumno
       .destroy()

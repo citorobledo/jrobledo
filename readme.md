@@ -119,8 +119,8 @@ const B = sequelize.define('B', /* ... */);
 
 A.hasOne(B); // A HasOne B (con la clave foranea en la tabla B)
 A.belongsTo(B); // A BelongsTo B (con la clave foranea en A)
-A.hasMany(B); // A HasMany B
-A.belongsToMany(B, { through: 'C' }); // A BelongsToMany B through the junction table C
+A.hasMany(B); // A HasMany B (con la clave foranea en la tabla B)
+A.belongsToMany(B, { through: 'C' }); // A BelongsToMany B through the junction table C (usando la tabla C como tabla de unión)
 
 El orden en que se define la asociación es relevante. En otras palabras, el orden importa, para los cuatro casos. En todos los ejemplos anteriores, "A" se llama el modelo fuente y "B" se llama el modelo objetivo . Esta terminología es importante.
 
@@ -154,5 +154,18 @@ PUT: http://localhost:3001/car/1 .
 {
     "nombre": "tecnicatura en informatica" (nuevo nombre)
 }
+```
+
+### semana 11:
+```sh
+
+se creo la carpeta utilidades con el archivo "utilidades.js" que contiene funciones.
+Para exportar funciones de un archivo a otro se usa el comando "module.exports = {nombre de la funcion}" al final del archivo.
+Para usarlas se importa el archivo con: "const utilidades = require ('../utilidades/utilidades.js');" y se llama a la funcion con: "utilidades.nombreFuncion(parametros);"
+
+Se crearon funcione que se utilizaron para la paginacoion.
+se implemento la paginacion en alumnos
+
+```
 
 

@@ -2,6 +2,18 @@ var express = require("express");
 var router = express.Router();
 var models = require("../models");
 
+const findCarrera = (id, { onSuccess, onNotFound, onError }) => {
+  models.carrera
+    .findOne({
+      attributes: [
+        "id",
+        "nombre"],
+      where: { id }
+    })
+    .then(carrera => (carrera ? onSuccess(carrera) : onNotFound()))
+    .catch(() => onError());
+};
+
 router.get("/", (req, res) => {// trae todas las carreras
   console.log("Esto es un mensaje para ver en consola");
   models.carrera
@@ -12,22 +24,37 @@ router.get("/", (req, res) => {// trae todas las carreras
     .catch(() => res.sendStatus(500));
 });
 
-router.get("/mat", (req, res) => {// trae todas las materias de la carrera
-  console.log("Esto es un mensaje para ver en consola");
-  models.carrera
-    .findAll({
-      attributes: ["id", "nombre"],
-      include: [{
-        model: models.matricula,
-        attributes: ["id_carrera"],
-        include: [{
-          attributes: ["nombre"],
-          model: models.materia,
-        }]
-      }]
-    })
-    .then(carreras => res.send(carreras))
-    .catch(() => res.sendStatus(500));
+router.get("/:id", (req, res) => {
+  findCarrera(req.params.id, {
+    onSuccess: carrera => res.send(carrera),
+    onNotFound: () => res.sendStatus(404),
+    onError: () => res.sendStatus(500)
+  });
+});
+
+router.get("/mat/:id", (req, res) => {// trae todas las materias de una carrera por id
+  console.log("Petición GET a /car/mat/:id");
+  findCarrera(req.params.id, {
+    onSuccess: carrera => {
+      models.carrera
+        .findOne({
+          attributes: ["id", "nombre"],
+          where: { id: req.params.id },
+          include: [{
+            model: models.matricula,
+            attributes: ["id_carrera"],
+            include: [{
+              attributes: ["nombre"],
+              model: models.materia,
+            }]
+          }]
+        })
+        .then(carrera => res.send(carrera))
+        .catch(() => res.sendStatus(500));
+    },
+    onNotFound: () => res.sendStatus(404),
+    onError: () => res.sendStatus(500)
+  });
 });
 
 router.post("/", (req, res) => {
@@ -45,26 +72,6 @@ router.post("/", (req, res) => {
         res.sendStatus(500)
       }
     });
-});
-
-const findCarrera = (id, { onSuccess, onNotFound, onError }) => {
-  models.carrera
-    .findOne({
-      attributes: [
-        "id",
-        "nombre"],
-      where: { id }
-    })
-    .then(carrera => (carrera ? onSuccess(carrera) : onNotFound()))
-    .catch(() => onError());
-};
-
-router.get("/:id", (req, res) => {
-  findCarrera(req.params.id, {
-    onSuccess: carrera => res.send(carrera),
-    onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
-  });
 });
 
 router.put("/:id", (req, res) => {
@@ -89,11 +96,9 @@ router.put("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
-  const onSuccess = carrera =>
-    carrera
-      .destroy()
-      .then(() => res.sendStatus(200))
-      .catch(() => res.sendStatus(500));
+  const onSuccess = carrera => carrera.destroy()
+    .then(() => res.sendStatus(200))
+    .catch(() => res.sendStatus(500));
   findCarrera(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
