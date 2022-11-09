@@ -165,7 +165,30 @@ Para usarlas se importa el archivo con: "const utilidades = require ('../utilida
 
 Se crearon funcione que se utilizaron para la paginacoion.
 se implemento la paginacion en alumnos
+luego de attributes se agrega la paginacion:
+offset: utilidades.getOffset(req.query.pagina, req.query.limite), //offset es el numero de registros que se salta
+limit: utilidades.reqSino(req.query.limite, 10)
 
 ```
 
+### semana 12:
+```sh
+se agregaron validaciones a los campos de los formularios para que no se ingresen datos erroneos.
+por ejemplo:
+validate: {
+    notEmpty: {
+    msg: 'El campo no puede estar vacio'
+    },
+    isAlpha: {
+      args: true,
+      msg: 'El campo solo puede contener letras'
+    }
+}
 
+se cambio el sendStatus(500) por res.json({ error}); en las rutas para que se envie un mensaje de error al postman.
+
+se agrego un console.log en el catch de la ruta POST  para que se vea el error en la consola. 
+console.log(` ${error.errors[0].value} ya existe]`);
+
+
+```

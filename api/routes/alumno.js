@@ -102,7 +102,7 @@ router.get("/car/:dni", (req, res) => {   // este get trae las carreras del alum
 });
 
 router.post("/", (req, res) => {
-  console.log("Peticion POST recibida en /alumno");
+  console.log("Peticion POST recibida en /alu");
   models.alumno
     .create({
       dni: req.body.dni,
@@ -117,11 +117,12 @@ router.post("/", (req, res) => {
     }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
+        console.log(` ${error.errors[0].value} ya existe]`);
         res.status(400).send('Bad request: existe otro alumno con datos iguales')
       }
       else {
-        console.log(`Error al intentar insertar en la base de datos: ${error}`)
-        res.sendStatus(500)
+        console.log(`Error al intentar insertar en la base de datos: ${error}`);
+        res.json({ error});
       }
     });
 });

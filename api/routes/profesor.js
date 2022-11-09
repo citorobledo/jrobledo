@@ -90,11 +90,12 @@ router.post("/", (req, res) => {
     }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
-        res.status(400).send('Bad request: existe otro profesor con mismos datos')
+        console.log(` ${error.errors[0].value} ya existe]`);
+        res.status(400).send('Bad request: existe otro profesor con datos iguales')
       }
       else {
-        console.log(`Error al intentar insertar en la base de datos: ${error}`)
-        res.sendStatus(500)
+        console.log(`Error al intentar insertar en la base de datos: ${error}`);
+        res.json({ error});
       }
     });
 });
