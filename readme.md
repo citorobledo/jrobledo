@@ -1,4 +1,7 @@
-<!--- <div style="background-color:#f612; text-align:left;  padding:40px 15px;"> -->
+<!--- 
+<div style="background-color:#f612; text-align:left;  padding:40px 15px;">
+<h1 style="color:#fff; font-size: 40px; font-weight: 300; margin: 0;">Readme</h1>
+-->
 
 <table> <td bgcolor =  #807000 >
 # **pasos semana a semana para la realizacion de TP**
@@ -196,4 +199,4 @@ console.log(` ${error.errors[0].value} ya existe]`);
 
 
 ```
-</div>
+</table> </td>
