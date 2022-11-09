@@ -1,7 +1,19 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const carrera = sequelize.define('carrera', {
-    nombre: DataTypes.STRING
+    nombre: {
+      type: DataTypes.STRING,
+      validate: {
+        isAlphanumeric: {
+          args: true,
+          msg: "El nombre solo puede contener letras y números"
+        },
+        len: {
+          args: [3, 50],
+          msg: "El nombre debe tener entre 3 y 50 caracteres"
+        }
+      }
+    }
   }, {});
   carrera.associate = function(models) {
     carrera.hasMany(models.matricula, { // asociacion a la tabla matricula (tiene muchas)

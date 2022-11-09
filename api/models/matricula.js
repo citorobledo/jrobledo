@@ -1,10 +1,42 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const matricula = sequelize.define('matricula', {
-    id_alumno: DataTypes.INTEGER,
-    id_profesor: DataTypes.INTEGER,
-    id_materia: DataTypes.INTEGER,
-    id_carrera: DataTypes.INTEGER
+    id_alumno: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isInt: {
+          args: true,
+          msg: "El ID del alumno debe ser un número entero"
+        }
+      }
+    },
+    id_profesor: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isInt: {
+          args: true,
+          msg: "El ID del profesor debe ser un número entero"
+        }
+      }
+    },
+    id_materia: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isInt: {
+          args: true,
+          msg: "El ID de la materia debe ser un número entero"
+        }
+      }
+    },
+    id_carrera: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isInt: {
+          args: true,
+          msg: "El ID de la carrera debe ser un número entero"
+        }
+      }
+    }
   }, {});
   matricula.associate = function(models) {
     /* 

@@ -1,3 +1,5 @@
+<div style="background-color:#f612; text-align:left;  padding:40px 15px;">
+
 # **pasos semana a semana para la realizacion de TP**
 
 ## Titulo: TP Estrategias de Persistencia
@@ -114,6 +116,7 @@ npx sequelize db:migrate
 
 ```
 ### TIPO DE RELACIONES SEQUELIZE:
+```sh
 const A = sequelize.define('A', /* ... */);
 const B = sequelize.define('B', /* ... */);
 
@@ -133,7 +136,7 @@ las asociaciones A.hasMany(B)  significa que existe una relación de uno a mucho
 Estas tres llamadas harán que Sequelize agregue automáticamente claves foráneas a los modelos apropiados (a menos que ya estén presentes).
 
 las asociaciones A.belongsToMany(B, { through: 'C' })  significa que existe una relación de muchos a muchos entre A y B, usando la tabla C como tabla de unión , que tendrá las claves foráneas ( A_Id y B_Id, por ejemplo). Sequelize creará automáticamente este modelo C. (a menos que ya exista) y defina las claves externas apropiadas en él. 
-
+```
 ### COMANDOS POST-MAN:
 ```sh
 - hace un get a la tabla carrera que en el codigo esta definida como "app.use('/car', carrerasRouter);" en app.js
@@ -192,3 +195,4 @@ console.log(` ${error.errors[0].value} ya existe]`);
 
 
 ```
+</div>
