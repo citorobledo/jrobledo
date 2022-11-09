@@ -1,5 +1,6 @@
-<div style="background-color:#f612; text-align:left;  padding:40px 15px;">
+<!--- <div style="background-color:#f612; text-align:left;  padding:40px 15px;"> -->
 
+<table> <td bgcolor =  #807000 >
 # **pasos semana a semana para la realizacion de TP**
 
 ## Titulo: TP Estrategias de Persistencia
