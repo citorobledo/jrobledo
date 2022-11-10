@@ -25,7 +25,7 @@ router.get("/", (req, res) => { //obtener todas las materias
     .catch(() => res.sendStatus(500));
 });
 
-router.get("/mat/:id", (req, res) => { //obtener una materia por id
+router.get("/:id", (req, res) => { //obtener una materia por id
   console.log("Petición GET a /mat/:id");
   findMateria(req.params.id, {
     onSuccess: materia => res.send(materia),
@@ -34,17 +34,18 @@ router.get("/mat/:id", (req, res) => { //obtener una materia por id
   });
 });
 
-router.get("/pro", (req, res) => {//trae todos los profesores de las materias
-  console.log("Petición GET a /mat/pro");
+router.get("/prof/:id", (req, res) => {//trae todos los profesores de la materia con el id
+  console.log("Petición GET a /mat/prof/:id");
   models.materia
-    .findAll({
+    .findOne({
       attributes: ["id", "nombre"],
+      where: { id: req.params.id },
        include:[{
         model:models.matricula, 
         attributes: ["id_profesor"],
         include:[{
           model:models.profesor,
-          attributes: ["nombre", "apellido"],
+          attributes: ["dni", "nombre", "apellido"],
        }]
       }]
     })
@@ -52,17 +53,18 @@ router.get("/pro", (req, res) => {//trae todos los profesores de las materias
     .catch(() => res.sendStatus(500));
 });
 
-router.get("/alu", (req, res) => {//trae todos los alumnos de las materias
-  console.log("Petición GET a /mat/alu");
+router.get("/alu/:id", (req, res) => {//trae todos los alumnos de las materias
+  console.log("Petición GET a /mat/alu/:id");
   models.materia
-    .findAll({
+    .findOne({
       attributes: ["id", "nombre"],
+      where: { id: req.params.id },
        include:[{
         model:models.matricula, 
         attributes: ["id_alumno"],
         include:[{
           model:models.alumno,
-          attributes: ["nombre", "apellido"],
+          attributes: ["dni", "nombre", "apellido"],
        }]
       }]
     })
@@ -77,7 +79,6 @@ router.post("/", (req, res) => { //crear una materia
       nombre: req.body.nombre,
     })
     .then(materia => res.status(201).send({
-      id: materia.id,
       nombre: materia.nombre,
     }))
     .catch(error => {
