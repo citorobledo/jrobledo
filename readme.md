@@ -9,13 +9,16 @@
 
 # Metodos:
 
+### A continuacion se detallan los metodos de la API, a los cuales se les debe anteponer la direccion base de la API, la cual es: http://localhost:3001
+
+
 ## Ruta alumnos:
 
 ```sh
 GET:
 /alu/: (obtener todos los alumnos con paginacion), tiene los parametros por defecto pagina = 1, y limite = 10. Para definir una paginacion manualente se deben incluir los paraetros que los definen.
 ejemplo:
- /alu?pagina=n&limite=m (donde n,m son enteros positios)
+ /alu?pagina=n&limite=m (donde n,m son enteros positivos)
 
  GET/ID:
  /alu/:id/: (obtener un alumno referenciado por el ID),deuelve todos los datos del aluno on ese ID.
@@ -25,15 +28,15 @@ ejemplo:
  /alu/dni/xxxxxxxx (donde xxxxxxxx es unnuero entero de 8 digitos)
 
  GET/PROF:
- /alu/prof/:dni (obtener los profesores de un alumno referenciado por el DNI),deuelve todos los datos de los profesores del aluno con ese DNI.
+ /alu/prof/:dni (obtener los profesores de un alumno referenciado por el DNI), deuelve todos los datos de los profesores del aluno con ese DNI.
  /alu/prof/dni/xxxxxxxx (donde xxxxxxxx es unnuero entero de 8 digitos)
 
  GET/MAT:
- /alu/mat/:dni (obtener las materias de un alumno referenciado por el DNI),deuelve todas las materias del aluno con ese DNI.
+ /alu/mat/:dni (obtener las materias de un alumno referenciado por el DNI), deuelve todas las materias del aluno con ese DNI.
  /alu/mat/dni/xxxxxxxx (donde xxxxxxxx es unnuero entero de 8 digitos)
 
  GET/CAR:
- /alu/car/:dni (obtener las carreras de un alumno referenciado por el DNI),deuelve todas las carreras del aluno con ese DNI.
+ /alu/car/:dni (obtener las carreras de un alumno referenciado por el DNI), deuelve todas las carreras del aluno con ese DNI.
  /alu/car/dni/xxxxxxxx (donde xxxxxxxx es unnuero entero de 8 digitos)
 
  POST/ALU:
@@ -124,6 +127,71 @@ los campos son los siguientes:
   (donde id es un nuero entero que referencia a una carrera )
  ```
 ## Ruta materias:
+  
+```sh
+GET/MAT:
+/mat/: (obtiene todos los registros de la tabla materias)
+
+GET/MAT/ID:
+/mat/:id (obtiene los datos de la materia referenciada por el id)
+
+GET/MAT/PROF:
+/mat/prof/:id (obtiene todos los profesores de la materia referenciada por el id)
+
+GET/MAT/ALU:
+/mat/alu/:id (obtiene todos los alumnos de la materia referenciada por el id)
+
+POST/MAT:
+/mat/: (crea una materia en la base de datos)
+los campos son los siguientes:
+ nombre: admite solo letras entre 3-50 acracteres
+
+PUT/MAT:
+/mat/:id: (actualiza una materia en la base de datos referenciado por el id)
+los campos son los siguientes:
+ nombre: admite solo letras entre 3-50 acracteres
+ el registro debe existir previamente.
+
+DELETE/MAT:
+/mat/:id (Elimina un registro de la base de datos referenciado por el id)
+(donde id es un nuero entero que referencia a una materia )
+```
+## Ruta matriculas:
+
+```sh
+GET/MATR:
+/matr/: (obtiene todos los registros de la tabla matriculas)
+
+GET/MATR/ID:
+/matr/:id (obtiene los datos de la matricula referenciada por el id)
+
+GET/MATR/ALUMN_DNI:
+/matr/alumn_dni/:dni (obtiene los datos del alumno referenciado por el dni)
+
+GET/MATR/ALUMN_MATR:
+/matr/alumn_matr/:dni (obtiene las matriculas del alumno referenciado por el dni)
+
+POST/MATR:
+/matr/: (crea una matricula en la base de datos)
+los campos son los siguientes:
+ id_alumno: admite solo numeros enteros
+ id_materia: admite solo numeros enteros
+ id_profesor: admite solo numeros enteros
+ id_carrera: admite solo numeros enteros
+
+PUT/MATR:
+/matr/:id: (actualiza una matricula en la base de datos referenciado por el id)
+los campos son los siguientes:
+ id_alumno: admite solo numeros enteros
+ id_materia: admite solo numeros enteros
+ id_profesor: admite solo numeros enteros
+ id_carrera: admite solo numeros enteros
+ el registro debe existir previamente.
+
+DELETE/MATR:
+/matr/:id (Elimina un registro de la base de datos referenciado por el id)
+(donde id es un nuero entero que referencia a una matricula )
+```
 
 # **pasos semana a semana sobre el progreso de TP**
 
