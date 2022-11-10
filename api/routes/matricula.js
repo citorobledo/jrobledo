@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 var models = require("../models");
 
-const findmatricula = (id, { onSuccess, onNotFound, onError }) => {
+const findmatricula = (id, { onSuccess, onNotFound, onError }) => { // funcion para buscar una matricula por id
   models.matricula
     .findOne({
       attributes: [
@@ -33,7 +33,7 @@ const findAlumno = ( dni, { onSuccess, onNotFound, onError }) => {// funcion par
         .catch(() => onError());// si hay un error ejecuta onError
 };
 
-router.get("/", (req, res) => {
+router.get("/", (req, res) => { // este get trae todas las matriculas
   console.log("Petición GET a /matr");
   models.matricula
     .findAll({
@@ -43,7 +43,7 @@ router.get("/", (req, res) => {
     .catch(() => res.sendStatus(500));
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", (req, res) => {// devuelve la matricula con el id que se le pasa por parametro
   console.log("Petición GET a /matr/:id");
   findmatricula(req.params.id, {
     onSuccess: matricula => res.send(matricula),
@@ -79,7 +79,7 @@ router.get("/alumn_matr/:dni", (req, res) => { // busca el alumno por dni y devu
 });
 
 
-router.post("/", (req, res) => {
+router.post("/", (req, res) => { // crea una matricula
   console.log("Petición POST a /matr");
   models.matricula
     .create({ 
@@ -129,7 +129,7 @@ router.put("/:id", (req, res) => { // actualiza los datos de la matricula del id
   });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res) => { // elimina la matricula con el id que se le pasa por parametro
   console.log("Peticion DELETE en matr/:id");
   const onSuccess = matricula =>
     matricula

@@ -2,8 +2,21 @@ var express = require("express");
 var router = express.Router();
 var models = require("../models");
 
-router.get("/", (req, res) => {
-  console.log("Esto es un mensaje para ver en consola");
+const findMateria = (id, { onSuccess, onNotFound, onError }) => { //funcion para encontrar una materia por id
+  models.materia
+    .findOne({
+      attributes: [
+        "id", 
+        "nombre", 
+        "id_carrera"],
+      where: { id }
+    })
+    .then(materia => (materia ? onSuccess(materia) : onNotFound()))
+    .catch(() => onError());
+};
+
+router.get("/", (req, res) => { //obtener todas las materias
+  console.log("Petición GET a /mat");
   models.materia
     .findAll({
       attributes: ["id", "nombre"],
@@ -12,8 +25,17 @@ router.get("/", (req, res) => {
     .catch(() => res.sendStatus(500));
 });
 
-router.get("/prof", (req, res) => {//trae todos los profesores de la materia
-  console.log("Esto es un mensaje para ver en consola");
+router.get("/mat/:id", (req, res) => { //obtener una materia por id
+  console.log("Petición GET a /mat/:id");
+  findMateria(req.params.id, {
+    onSuccess: materia => res.send(materia),
+    onNotFound: () => res.sendStatus(404),
+    onError: () => res.sendStatus(500)
+  });
+});
+
+router.get("/pro", (req, res) => {//trae todos los profesores de las materias
+  console.log("Petición GET a /mat/pro");
   models.materia
     .findAll({
       attributes: ["id", "nombre"],
@@ -30,8 +52,8 @@ router.get("/prof", (req, res) => {//trae todos los profesores de la materia
     .catch(() => res.sendStatus(500));
 });
 
-router.get("/alum", (req, res) => {//trae todos los alumnos de la materia
-  console.log("Esto es un mensaje para ver en consola");
+router.get("/alu", (req, res) => {//trae todos los alumnos de las materias
+  console.log("Petición GET a /mat/alu");
   models.materia
     .findAll({
       attributes: ["id", "nombre"],
@@ -48,16 +70,15 @@ router.get("/alum", (req, res) => {//trae todos los alumnos de la materia
     .catch(() => res.sendStatus(500));
 });
 
-router.post("/", (req, res) => {
+router.post("/", (req, res) => { //crear una materia
+  console.log("Petición POST a /mat");
   models.materia
     .create({
       nombre: req.body.nombre,
-      id_carrera: req.body.id_carrera
     })
     .then(materia => res.status(201).send({
       id: materia.id,
       nombre: materia.nombre,
-      id_carrera: materia.id_carrera
     }))
     .catch(error => {
       if (error == "SequelizeUniqueConstraintError: Validation error") {
@@ -65,33 +86,13 @@ router.post("/", (req, res) => {
       }
       else {
         console.log(`Error al intentar insertar en la base de datos: ${error}`)
-        res.sendStatus(500)
+        res.json({ error })
       }
     });
 });
 
-const findMateria = (id, { onSuccess, onNotFound, onError }) => {
-  models.materia
-    .findOne({
-      attributes: [
-        "id", 
-        "nombre", 
-        "id_carrera"],
-      where: { id }
-    })
-    .then(materia => (materia ? onSuccess(materia) : onNotFound()))
-    .catch(() => onError());
-};
-
-router.get("/:id", (req, res) => {
-  findMateria(req.params.id, {
-    onSuccess: materia => res.send(materia),
-    onNotFound: () => res.sendStatus(404),
-    onError: () => res.sendStatus(500)
-  });
-});
-
-router.put("/:id", (req, res) => {
+router.put("/:id", (req, res) => { //actualizar una materia
+  console.log("Petición PUT a /mat/:id");
   const onSuccess = materia =>
     materia
       .update({ nombre: req.body.nombre }, { fields: ["nombre"] })
@@ -112,7 +113,8 @@ router.put("/:id", (req, res) => {
   });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res) => { //eliminar una materia
+  console.log("Petición DELETE a /mat/:id");
   const onSuccess = materia =>
     materia
       .destroy()

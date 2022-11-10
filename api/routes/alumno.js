@@ -3,7 +3,7 @@ var express = require("express");
 var router = express.Router();
 var models = require("../models");
 
-const findalumno = (id, { onSuccess, onNotFound, onError }) => {
+const findAlumno = (id, { onSuccess, onNotFound, onError }) => {
   models.alumno
     .findOne({
       attributes: [
@@ -12,6 +12,20 @@ const findalumno = (id, { onSuccess, onNotFound, onError }) => {
         "nombre",
         "apellido"],
       where: { id }
+    })
+    .then(alumno => (alumno ? onSuccess(alumno) : onNotFound()))
+    .catch(() => onError());
+};
+
+const findAlumnoDNI = (dni, { onSuccess, onNotFound, onError }) => {
+  models.alumno
+    .findOne({
+      attributes: [
+        "id",
+        "dni",
+        "nombre",
+        "apellido"],
+      where: { dni }
     })
     .then(alumno => (alumno ? onSuccess(alumno) : onNotFound()))
     .catch(() => onError());
@@ -32,9 +46,18 @@ router.get("/", (req, res) => {                             //obtener todos los 
     .catch(() => res.sendStatus(500));
 });
 
-router.get("/:id", (req, res) => {
-  console.log("Peticion GET recibida en /alumno/:id");
-  findalumno(req.params.id, {
+router.get("/:id", (req, res) => {              // obtener un alumno por id
+  console.log("Peticion GET recibida en /alu/:id");
+  findAlumno(req.params.id, {
+    onSuccess: alumno => res.send(alumno),
+    onNotFound: () => res.sendStatus(404),
+    onError: () => res.sendStatus(500)
+  });
+});
+
+router.get("/dni/:dni", (req, res) => {         // obtener un alumno por dni.
+  console.log("Peticion GET recibida en /alu/dni/:dni");
+  findAlumnoDNI(req.params.dni, {
     onSuccess: alumno => res.send(alumno),
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)
@@ -101,7 +124,7 @@ router.get("/car/:dni", (req, res) => {   // este get trae las carreras del alum
     .catch(() => res.sendStatus(500));
 });
 
-router.post("/", (req, res) => {
+router.post("/", (req, res) => {               // crear un alumno
   console.log("Peticion POST recibida en /alu");
   models.alumno
     .create({
@@ -127,7 +150,7 @@ router.post("/", (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", (req, res) => {            // modificar un alumno
   console.log("Peticion PUT recibida en /alumno/:id");
   const onSuccess = alumno =>
     alumno
@@ -151,21 +174,21 @@ router.put("/:id", (req, res) => {
           res.sendStatus(500)
         }
       });
-    findalumno(req.params.id, {
+    findAlumno(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)
   });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res) => {        // eliminar un alumno
   console.log("Peticion DELETE recibida en /alumno/:id");
   const onSuccess = alumno =>
     alumno
       .destroy()
       .then(() => res.sendStatus(200))
       .catch(() => res.sendStatus(500));
-  findalumno(req.params.id, {
+  findAlumno(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)

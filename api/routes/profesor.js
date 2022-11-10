@@ -3,7 +3,7 @@ var express = require("express");
 var router = express.Router();
 var models = require("../models");
 
-const findprofesor = (id, { onSuccess, onNotFound, onError }) => {
+const findProfesor = (id, { onSuccess, onNotFound, onError }) => {
   models.profesor
     .findOne({
       attributes: [
@@ -17,8 +17,22 @@ const findprofesor = (id, { onSuccess, onNotFound, onError }) => {
     .catch(() => onError());
 };
 
+const findProfesorDNI = (dni, { onSuccess, onNotFound, onError }) => {
+  models.profesor
+    .findOne({
+      attributes: [
+        "id",
+        "dni",
+        "nombre",
+        "apellido"],
+      where: { dni }
+    })
+    .then(profesor => (profesor ? onSuccess(profesor) : onNotFound()))
+    .catch(() => onError());
+};
+
 router.get("/", (req, res) => {//obtener todos los profesores
-  console.log("Petición GET a /profesor");
+  console.log("Petición GET a /pro");
   models.profesor
     .findAll({
       attributes: ["id", "dni", "nombre", "apellido"],
@@ -28,7 +42,17 @@ router.get("/", (req, res) => {//obtener todos los profesores
 });
 
 router.get("/:id", (req, res) => { //obtener un profesor por id
-  findprofesor(req.params.id, {
+  console.log("Petición GET a /pro/:id");
+  findProfesor(req.params.id, {
+    onSuccess: profesor => res.send(profesor),
+    onNotFound: () => res.sendStatus(404),
+    onError: () => res.sendStatus(500)
+  });
+});
+
+router.get("/dni/:dni", (req, res) => { //obtener un profesor por dni
+  console.log("Petición GET a /pro/dni/:dni");
+  findProfesorDNI(req.params.dni, {
     onSuccess: profesor => res.send(profesor),
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)
@@ -75,7 +99,7 @@ router.get("/mat/:dni", (req, res) => {        //obtener todas las materias de u
     .catch(() => res.sendStatus(500));
 });
 
-router.post("/", (req, res) => {
+router.post("/", (req, res) => { //crear un profesor
   models.profesor
     .create({
       dni: req.body.dni,
@@ -100,7 +124,7 @@ router.post("/", (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", (req, res) => { //actualizar un profesor
   const onSuccess = profesor =>
     profesor.update({
       dni: req.body.dni,
@@ -117,20 +141,20 @@ router.put("/:id", (req, res) => {
           res.sendStatus(500)
         }
       });
-  findprofesor(req.params.id, {
+  findProfesor(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)
   });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res) => { //borrar un profesor
   const onSuccess = profesor =>
     profesor
       .destroy()
       .then(() => res.sendStatus(200))
       .catch(() => res.sendStatus(500));
-  findprofesor(req.params.id, {
+  findProfesor(req.params.id, {
     onSuccess,
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)

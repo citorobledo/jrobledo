@@ -14,8 +14,20 @@ const findCarrera = (id, { onSuccess, onNotFound, onError }) => {
     .catch(() => onError());
 };
 
+const findCarreraNombre = (nombre, { onSuccess, onNotFound, onError }) => {
+  models.carrera
+    .findOne({
+      attributes: [
+        "id",
+        "nombre"],
+      where: { nombre }
+    })
+    .then(carrera => (carrera ? onSuccess(carrera) : onNotFound()))
+    .catch(() => onError());
+};
+
 router.get("/", (req, res) => {// trae todas las carreras
-  console.log("Esto es un mensaje para ver en consola");
+  console.log("Petición GET a /car");
   models.carrera
     .findAll({
       attributes: ["id", "nombre"],
@@ -24,8 +36,18 @@ router.get("/", (req, res) => {// trae todas las carreras
     .catch(() => res.sendStatus(500));
 });
 
-router.get("/:id", (req, res) => {
+router.get("/:id", (req, res) => { // trae una carrera por id
+  console.log("Petición GET a /car/:id");
   findCarrera(req.params.id, {
+    onSuccess: carrera => res.send(carrera),
+    onNotFound: () => res.sendStatus(404),
+    onError: () => res.sendStatus(500)
+  });
+});
+
+router.get("/nomb/:nombre", (req, res) => { // trae una carrera por nombre
+  console.log("Petición GET a /car/nomb/:nombre");
+  findCarreraNombre(req.params.nombre, {
     onSuccess: carrera => res.send(carrera),
     onNotFound: () => res.sendStatus(404),
     onError: () => res.sendStatus(500)
@@ -57,7 +79,7 @@ router.get("/mat/:id", (req, res) => {// trae todas las materias de una carrera 
   });
 });
 
-router.post("/", (req, res) => {
+router.post("/", (req, res) => { // crea una carrera
   models.carrera.create({nombre: req.body.nombre})
     .then(carrera => res.status(201).send({
       id: carrera.id, 
@@ -74,7 +96,7 @@ router.post("/", (req, res) => {
     });
 });
 
-router.put("/:id", (req, res) => {
+router.put("/:id", (req, res) => { // actualiza una carrera por id
   const onSuccess = carrera =>
     carrera
       .update({ nombre: req.body.nombre }, { fields: ["nombre"] })
@@ -95,7 +117,7 @@ router.put("/:id", (req, res) => {
   });
 });
 
-router.delete("/:id", (req, res) => {
+router.delete("/:id", (req, res) => { // elimina una carrera por id
   const onSuccess = carrera => carrera.destroy()
     .then(() => res.sendStatus(200))
     .catch(() => res.sendStatus(500));

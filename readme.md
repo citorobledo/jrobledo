@@ -2,7 +2,7 @@
 <div style="background-color:#f612; text-align:left;  padding:40px 15px;">
 <h1 style="color:#fff; font-size: 40px; font-weight: 300; margin: 0;">Readme</h1>
 
-# **pasos semana a semana para la realizacion de TP**
+# **pasos semana a semana sobre el progreso de TP**
 
 ## Titulo: TP Estrategias de Persistencia
 ## Author: Javier Robledo
@@ -168,10 +168,10 @@ se creo la carpeta utilidades con el archivo "utilidades.js" que contiene funcio
 Para exportar funciones de un archivo a otro se usa el comando "module.exports = {nombre de la funcion}" al final del archivo.
 Para usarlas se importa el archivo con: "const utilidades = require ('../utilidades/utilidades.js');" y se llama a la funcion con: "utilidades.nombreFuncion(parametros);"
 
-Se crearon funcione que se utilizaron para la paginacoion.
-se implemento la paginacion en alumnos
-luego de attributes se agrega la paginacion:
-offset: utilidades.getOffset(req.query.pagina, req.query.limite), //offset es el numero de registros que se salta
+Se crearon funcione que se utilizaron para la paginacion.
+se implemento la paginacion en alumnos.
+Luego de attributes se agrega la paginacion:
+offset: utilidades.getOffset(req.query.pagina, req.query limite), //offset es el numero de registros que se salta
 limit: utilidades.reqSino(req.query.limite, 10)
 
 ```
@@ -194,7 +194,6 @@ se cambio el sendStatus(500) por res.json({ error}); en las rutas para que se en
 
 se agrego un console.log en el catch de la ruta POST  para que se vea el error en la consola. 
 console.log(` ${error.errors[0].value} ya existe]`);
-
 
 ```
 </div> 
