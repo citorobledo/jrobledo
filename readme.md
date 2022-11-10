@@ -2,10 +2,130 @@
 <div style="background-color:#f612; text-align:left;  padding:40px 15px;">
 <h1 style="color:#fff; font-size: 40px; font-weight: 300; margin: 0;">Readme</h1>
 
-# **pasos semana a semana sobre el progreso de TP**
-
 ## Titulo: TP Estrategias de Persistencia
 ## Author: Javier Robledo
+
+# Documentacion acerca de la API
+
+# Metodos:
+
+## Ruta alumnos:
+
+```sh
+GET:
+/alu/: (obtener todos los alumnos con paginacion), tiene los parametros por defecto pagina = 1, y limite = 10. Para definir una paginacion manualente se deben incluir los paraetros que los definen.
+ejemplo:
+ /alu?pagina=n&limite=m (donde n,m son enteros positios)
+
+ GET/ID:
+ /alu/:id/: (obtener un alumno referenciado por el ID),deuelve todos los datos del aluno on ese ID.
+
+ GET/DNI:
+ /alu/dni/:dni: (obtener un alumno referenciado por el DNI),deuelve todos los datos del aluno con ese DNI.
+ /alu/dni/xxxxxxxx (donde xxxxxxxx es unnuero entero de 8 digitos)
+
+ GET/PROF:
+ /alu/prof/:dni (obtener los profesores de un alumno referenciado por el DNI),deuelve todos los datos de los profesores del aluno con ese DNI.
+ /alu/prof/dni/xxxxxxxx (donde xxxxxxxx es unnuero entero de 8 digitos)
+
+ GET/MAT:
+ /alu/mat/:dni (obtener las materias de un alumno referenciado por el DNI),deuelve todas las materias del aluno con ese DNI.
+ /alu/mat/dni/xxxxxxxx (donde xxxxxxxx es unnuero entero de 8 digitos)
+
+ GET/CAR:
+ /alu/car/:dni (obtener las carreras de un alumno referenciado por el DNI),deuelve todas las carreras del aluno con ese DNI.
+ /alu/car/dni/xxxxxxxx (donde xxxxxxxx es unnuero entero de 8 digitos)
+
+ POST/ALU:
+ /alu/: (Crea un alumno en la base de datos)
+ los campos son los siguientes:
+ dni: admite solo numeros enteros de 8 digitos
+ nombre: admite solo letras entre 3-50 acracteres
+ apellido: admite solo letras entre 3-50 acracteres
+
+ PUT/ALU:
+ /alu/:id: (actualiza un alumno en la base de datos referenciado por el id)
+ los campos son los siguientes:
+ dni: admite solo numeros enteros de 8 digitos
+ nombre: admite solo letras entre 3-50 acracteres
+ apellido: admite solo letras entre 3-50 acracteres
+ el registro debe existir previamente.
+
+ DELETE/ALU:
+ /alu/:id (Elimina un registro de la base de datos)
+  (donde id es un nuero entero que referencia a un alumno )
+```
+
+## Ruta profesores:
+
+```sh
+GET/PRO:
+/pro/: (obtiene todos los registros de la tabla profesores)
+
+GET/PRO/ID:
+/pro/:id (obtiene los datos del profesor referenciado por el id) 
+
+GET/PRO/DNI:
+/pro/dni/:dni (obtiene los datos del profesor referenciado por el dni) 
+
+GET/PRO/ALUM/DNI:
+/pro/alum/:dni (obtiene todos los alumnos del profesor referenciado por el dni. con paginaion)
+
+GET/PRO/MAT/DNI:
+/pro/mat/:dni (obtiene todas las materias del profesor referenciado por el dni)
+
+POST/PRO:
+/pro/: (crea un profesor en la base de datos)
+los campos son los siguientes:
+ dni: admite solo numeros enteros de 8 digitos
+ nombre: admite solo letras entre 3-50 acracteres
+ apellido: admite solo letras entre 3-50 acracteres
+
+ PUT/PRO:
+ /pro/:id: (actualiza un profesor en la base de datos referenciado por el id)
+ los campos son los siguientes:
+ dni: admite solo numeros enteros de 8 digitos
+ nombre: admite solo letras entre 3-50 acracteres
+ apellido: admite solo letras entre 3-50 acracteres
+ el registro debe existir previamente.
+
+ DELETE/PRO:
+ /pro/:id (Elimina un registro de la base de datos)
+  (donde id es un nuero entero que referencia a un profesor )
+```
+## Ruta carreras:
+
+```sh
+GET/CAR:
+/car/: (obtiene todos los registros de la tabla carrera)
+
+GET/CAR/ID:
+/car/:id (obtiene los datos de la carrera referenciado por el id) 
+
+GET/CAR/NOMB:
+/car/nomb/:nombre (obtiene los datos de la carrera referenciado por el nombre) 
+
+GET/CAR/MAT/:
+/car/mat/:id (obtiene todas las materias de la carrera referenciada por id)
+
+POST/CAR:
+/car/: (crea una carrera en la base de datos)
+los campos son los siguientes:
+ nombre: admite solo letras entre 3-50 acracteres
+
+ PUT/CAR:
+ /car/:id: (actualiza una carrera en la base de datos referenciado por el id)
+ los campos son los siguientes:
+ nombre: admite solo letras entre 3-50 acracteres
+ el registro debe existir previamente.
+
+  DELETE/CAR:
+ /car/:id (Elimina un registro de la base de datos)
+  (donde id es un nuero entero que referencia a una carrera )
+ ```
+## Ruta materias:
+
+# **pasos semana a semana sobre el progreso de TP**
 
 ### semana 5 - 6:
 ### COMANDOS GIT:

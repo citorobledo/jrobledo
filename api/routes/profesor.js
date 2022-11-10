@@ -81,7 +81,7 @@ router.get("/alum/:dni", (req, res) => {        //obtener todos los alumnos de u
 });
 
 router.get("/mat/:dni", (req, res) => {        //obtener todas las materias de un profesor con dni 
-  console.log("Petición GET a /pro/alum/:dni");
+  console.log("Petición GET a /pro/mat/:dni");
   models.profesor                               // busca en la tabla profesor
     .findOne({
       attributes: ["id", "dni", "nombre", "apellido"],
@@ -100,6 +100,7 @@ router.get("/mat/:dni", (req, res) => {        //obtener todas las materias de u
 });
 
 router.post("/", (req, res) => { //crear un profesor
+  console.log("Petición POST a /pro");
   models.profesor
     .create({
       dni: req.body.dni,
@@ -125,6 +126,7 @@ router.post("/", (req, res) => { //crear un profesor
 });
 
 router.put("/:id", (req, res) => { //actualizar un profesor
+  console.log("Petición PUT a /pro/:id");
   const onSuccess = profesor =>
     profesor.update({
       dni: req.body.dni,

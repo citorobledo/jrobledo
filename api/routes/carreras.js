@@ -80,9 +80,9 @@ router.get("/mat/:id", (req, res) => {// trae todas las materias de una carrera 
 });
 
 router.post("/", (req, res) => { // crea una carrera
+  console.log("Petición POST a /car");
   models.carrera.create({nombre: req.body.nombre})
     .then(carrera => res.status(201).send({
-      id: carrera.id, 
       nombre: carrera.nombre
     }))
     .catch(error => {

@@ -32,7 +32,7 @@ const findAlumnoDNI = (dni, { onSuccess, onNotFound, onError }) => {
 };
 
 router.get("/", (req, res) => {                             //obtener todos los alumnos con paginacion
-  console.log("Peticion GET recibida en /alumno");
+  console.log("Peticion GET recibida en /alu");
   models.alumno                                             //busca en la tabla alumno
     .findAll({
       attributes: ["id", "dni", "nombre", "apellido"],      //muestra solo los atributos id, dni, nombre y apellido
@@ -65,7 +65,7 @@ router.get("/dni/:dni", (req, res) => {         // obtener un alumno por dni.
 });
 
 router.get("/prof/:dni", (req, res) => {   // este get trae los profesores del alumno con el dni que se le pasa por parametro
-  console.log("Peticion GET recibida en /alumno/prof/:dni");
+  console.log("Peticion GET recibida en /alu/prof/:dni");
   models.alumno
     .findOne({
       attributes: ["id", "dni", "nombre", "apellido"],   //muestra el dni y el nombre del alumno
@@ -85,7 +85,7 @@ router.get("/prof/:dni", (req, res) => {   // este get trae los profesores del a
 });
 
 router.get("/mat/:dni", (req, res) => {   // este get trae las materias del alumno con el dni que se le pasa por parametro
-  console.log("Peticion GET recibida en /alumno/mat/:dni");
+  console.log("Peticion GET recibida en /alu/mat/:dni");
   models.alumno
     .findOne({
       attributes: ["id", "dni", "nombre", "apellido"],   //muestra el dni y el nombre del alumno
@@ -105,7 +105,7 @@ router.get("/mat/:dni", (req, res) => {   // este get trae las materias del alum
 });
 
 router.get("/car/:dni", (req, res) => {   // este get trae las carreras del alumno con el dni que se le pasa por parametro
-  console.log("Peticion GET recibida en /alumno/car/:dni");
+  console.log("Peticion GET recibida en /alu/car/:dni");
   models.alumno
     .findOne({
       attributes: ["id", "dni", "nombre", "apellido"],   //muestra el dni y el nombre del alumno
@@ -151,7 +151,7 @@ router.post("/", (req, res) => {               // crear un alumno
 });
 
 router.put("/:id", (req, res) => {            // modificar un alumno
-  console.log("Peticion PUT recibida en /alumno/:id");
+  console.log("Peticion PUT recibida en /alu/:id");
   const onSuccess = alumno =>
     alumno
       .update({
@@ -182,7 +182,7 @@ router.put("/:id", (req, res) => {            // modificar un alumno
 });
 
 router.delete("/:id", (req, res) => {        // eliminar un alumno
-  console.log("Peticion DELETE recibida en /alumno/:id");
+  console.log("Peticion DELETE recibida en /alu/:id");
   const onSuccess = alumno =>
     alumno
       .destroy()
