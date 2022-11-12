@@ -171,7 +171,7 @@ router.put("/:id", (req, res) => {            // modificar un alumno
         }
         else {
           console.log(`Error al intentar actualizar la base de datos: ${error}`)
-          res.sendStatus(500)
+          res.json({ error });
         }
       });
     findAlumno(req.params.id, {

@@ -104,7 +104,7 @@ router.put("/:id", (req, res) => { //actualizar una materia
         }
         else {
           console.log(`Error al intentar actualizar la base de datos: ${error}`)
-          res.sendStatus(500)
+          res.json({ error });
         }
       });
     findMateria(req.params.id, {

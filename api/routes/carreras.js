@@ -91,7 +91,7 @@ router.post("/", (req, res) => { // crea una carrera
       }
       else {
         console.log(`Error al intentar insertar en la base de datos: ${error}`)
-        res.sendStatus(500)
+        res.json({ error });
       }
     });
 });
@@ -107,7 +107,7 @@ router.put("/:id", (req, res) => { // actualiza una carrera por id
         }
         else {
           console.log(`Error al intentar actualizar la base de datos: ${error}`)
-          res.sendStatus(500)
+          res.json({ error });
         }
       });
     findCarrera(req.params.id, {

@@ -140,7 +140,7 @@ router.put("/:id", (req, res) => { //actualizar un profesor
         }
         else {
           console.log(`Error al intentar actualizar la base de datos: ${error}`)
-          res.sendStatus(500)
+          res.json({ error });
         }
       });
   findProfesor(req.params.id, {

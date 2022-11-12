@@ -95,7 +95,7 @@ router.post("/", (req, res) => { // crea una matricula
       }
       else {
         console.log(`Error al intentar insertar en la base de datos: ${error}`)
-        res.sendStatus(500)
+        res.json({ error });
       }
     });
 });
@@ -119,7 +119,7 @@ router.put("/:id", (req, res) => { // actualiza los datos de la matricula del id
               }
               else {
                 console.log(`Error al intentar actualizar la base de datos: ${error}`)
-                res.sendStatus(500)
+                res.json({ error });
               }
             });
     findmatricula(req.params.id, {// busca la matricula por id
