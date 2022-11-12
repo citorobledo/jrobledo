@@ -8,11 +8,9 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER
       }, 
-      id_carrera: {
-        type: Sequelize.INTEGER
-      },
       nombre: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
+        allowNull: false
       },
      
       createdAt: {
