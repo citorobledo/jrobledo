@@ -1,7 +1,9 @@
-const utilidades = require ('../utilidades/utilidades.js');
+const utilidades = require ('../utilidades/paginacion.js');
+const middleware = require('../utilidades/middleware');
 var express = require("express");
 var router = express.Router();
 var models = require("../models");
+
 
 const findAlumno = (id, { onSuccess, onNotFound, onError }) => {
   models.alumno
@@ -31,7 +33,7 @@ const findAlumnoDNI = (dni, { onSuccess, onNotFound, onError }) => {
     .catch(() => onError());
 };
 
-router.get("/", (req, res) => {                             //obtener todos los alumnos con paginacion
+router.get("/", middleware.verifyToken, (req, res) => {                             //obtener todos los alumnos con paginacion
   console.log("Peticion GET recibida en /alu");
   models.alumno                                             //busca en la tabla alumno
     .findAll({
@@ -46,7 +48,7 @@ router.get("/", (req, res) => {                             //obtener todos los 
     .catch(() => res.sendStatus(500));
 });
 
-router.get("/:id", (req, res) => {              // obtener un alumno por id
+router.get("/:id", middleware.verifyToken, (req, res) => {              // obtener un alumno por id
   console.log("Peticion GET recibida en /alu/:id");
   findAlumno(req.params.id, {
     onSuccess: alumno => res.send(alumno),

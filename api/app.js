@@ -8,6 +8,7 @@ var materiaRouter = require('./routes/materia');
 var alumnoRouter = require('./routes/alumno');
 var profesorRouter = require('./routes/profesor');
 var matriculaRouter = require('./routes/matricula');
+var userRouter = require('./routes/user');
 
 var app = express();
 
@@ -27,6 +28,7 @@ app.use('/mat', materiaRouter);
 app.use('/alu', alumnoRouter);
 app.use('/pro', profesorRouter);
 app.use('/matr', matriculaRouter);
+app.use('/user', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

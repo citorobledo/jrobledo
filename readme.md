@@ -1,6 +1,7 @@
 
 <div style="background-color:#f612; text-align:left;  padding:40px 15px;">
-<h1 style="color:#fff; font-size: 40px; font-weight: 300; margin: 0;">Readme</h1>
+<h1 style="color:#429; font-size: 40px; font-weight: 300; margin: 0;">Readme</h1>
+<h3 style="color:#429">
 
 ## Titulo: TP Estrategias de Persistencia
 ## Author: Javier Robledo
@@ -233,7 +234,7 @@ git pull
 npm install
 
 - instalar nodemon:
-    Es un wrapper de node, para reiniciar nuestro API Server cada vez que detecte modificaciones.
+    Es un wrapper de node, para reiniciar nuestro API Server cada vez que detecte modificaciones. La instalamos como dependencia de desarrollo.
 
     npm i -D nodemon
 
@@ -366,7 +367,7 @@ limit: utilidades.reqSino(req.query.limite, 10)
 
 ### semana 12:
 ```sh
-se agregaron validaciones a los campos de los formularios para que no se ingresen datos erroneos.
+Se agregaron validaciones a los campos de los formularios para que no se ingresen datos erroneos.
 por ejemplo:
 validate: {
     notEmpty: {
@@ -384,4 +385,17 @@ se agrego un console.log en el catch de la ruta POST  para que se vea el error e
 console.log(` ${error.errors[0].value} ya existe]`);
 
 ```
-</div> 
+## funcionalidad de registro y login:
+```sh
+creamos un modelo y una ruta para el usuario.
+
+
+```
+## dependencias para el registro y login:
+
+```sh
+npm install bcrypt
+npm install jsonwebtoken
+
+```
+</h3> 

@@ -1,4 +1,4 @@
-const utilidades = require ('../utilidades/utilidades.js');
+const utilidades = require ('../utilidades/paginacion.js');
 var express = require("express");
 var router = express.Router();
 var models = require("../models");
