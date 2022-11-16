@@ -10,7 +10,7 @@
 
     "AUTH_SECRET":"secret",
     "AUTH_EXPIRES":"1h",
-    "AUTH_ROUNDS": 5,
+    "AUTH_ROUNDS": 10,
 
     "seederStorage": "json",
     "seederStoragePath": "sequelizeSeeds.json"

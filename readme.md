@@ -257,7 +257,10 @@ npm install
 npm install sequelize-cli –save
 
 - para crear el modelo(tabla) para luego insertar en la base de datos:
-npx sequelize-cli model:generate --name materia --attributes nombre:string,id_carrera:integer
+npx sequelize-cli model:generate --name materia --attributes nombre:string
+
+-para crear el modelo alumnos:
+npx sequelize-cli model:generate --name alumno --attributes dni:integer,nombre:string,apellido:string
 
 - luego para que impacte la tabla o (modelo) en la base de datos corremos el comando:
 npx sequelize db:migrate 

@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       validate: {
         isInt: {
-          args: true,
+          args: [1-10],
           msg: "El ID del alumno debe ser un número entero"
         }
       }
@@ -25,6 +25,10 @@ module.exports = (sequelize, DataTypes) => {
         isInt: {
           args: true,
           msg: "El ID de la materia debe ser un número entero"
+        },
+          len: {
+            args: [1, 5],
+            msg: "El ID de la materia debe tener entre 1 y 5 dígitos"
         }
       }
     },
@@ -34,7 +38,11 @@ module.exports = (sequelize, DataTypes) => {
         isInt: {
           args: true,
           msg: "El ID de la carrera debe ser un número entero"
-        }
+        },
+          len: {
+            args: [1, 5],
+            msg: "El ID de la carrera debe tener entre 1 y 5 dígitos"
+      }
       }
     }
   }, {});

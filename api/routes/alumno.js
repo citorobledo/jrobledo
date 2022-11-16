@@ -128,8 +128,7 @@ router.get("/car/:dni", (req, res) => {   // este get trae las carreras del alum
 
 router.post("/", (req, res) => {               // crear un alumno
   console.log("Peticion POST recibida en /alu");
-  models.alumno
-    .create({
+  models.alumno.create({
       dni: req.body.dni,
       nombre: req.body.nombre,
       apellido: req.body.apellido

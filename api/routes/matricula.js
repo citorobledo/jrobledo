@@ -13,9 +13,8 @@ const findmatricula = (id, { onSuccess, onNotFound, onError }) => { // funcion p
         "id_carrera"
       ],
         where: { id }
-    })
-      .then(matricula => (matricula ? onSuccess(matricula) : onNotFound()))
-        .catch(() => onError());
+    }).then(matricula => (matricula ? onSuccess(matricula) : onNotFound())
+    ).catch(() => onError());
 };
 
 const findAlumno = ( dni, { onSuccess, onNotFound, onError }) => {// funcion para buscar un alumno por dni
@@ -28,9 +27,8 @@ const findAlumno = ( dni, { onSuccess, onNotFound, onError }) => {// funcion par
         "apellido"    
       ],
         where: { dni }//en donde el dni sea igual al dni que se pasa por parametro
-    })
-      .then(alumno => (alumno ? onSuccess(alumno) : onNotFound()))// si encuentra un alumno ejecuta onSuccess, sino ejecuta onNotFound
-        .catch(() => onError());// si hay un error ejecuta onError
+    }).then(alumno => (alumno ? onSuccess(alumno) : onNotFound()) // si encuentra un alumno ejecuta onSuccess, sino ejecuta onNotFound
+    ).catch(() => onError());// si hay un error ejecuta onError
 };
 
 router.get("/", (req, res) => { // este get trae todas las matriculas

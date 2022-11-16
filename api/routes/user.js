@@ -6,14 +6,14 @@ const middleware = require('../utilidades/middleware');
 // Controllers
 const AuthController = require('../utilidades/authController');
 
-// Home
+// Home es solo de prueba
 router.get('/', (req, res) => {
   console.log('Peticion GET recibida en /user');
   res.json({ hello: "World" });
 });
 
 // Dos rutas: login y registro
-router.post('/signin', middleware.verifyToken, AuthController.signIn);
+router.post('/signin', AuthController.signIn);// luego de esta autenticacion se genera un token
 
 router.post('/signup', AuthController.signUp);
 

@@ -3,6 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const alumno = sequelize.define('alumno', {
     dni: {
       type : DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
       validate: {
         isInt: {
           args: true,
@@ -16,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     nombre: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         isAlpha: {
           args: true,
@@ -29,6 +32,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     apellido: {
       type: DataTypes.STRING,
+      allowNull: false,
       validate: {
         isAlpha: {
           args: true,
