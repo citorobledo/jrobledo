@@ -3,6 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const materia = sequelize.define('materia', {
     nombre: {
       type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
       validate: {
         len: {
           args: [3, 50],

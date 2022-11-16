@@ -3,6 +3,8 @@ module.exports = (sequelize, DataTypes) => {
   const carrera = sequelize.define('carrera', {
     nombre: {
       type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
       validate: {
         isAlphanumeric: {
           args: true,
