@@ -56,16 +56,21 @@ module.exports = {
         let pass = ( req.body.password.length > 5 ) ? bcrypt.hashSync(req.body.password, parseInt(authConfig.rounds)) : req.body.password;
         // Crear un usuario
         model.user.create({
-            nombre: req.body.nombre,
-            apellido: req.body.apellido,
             email: req.body.email,
             password: pass
-        }).then(user => { //si se cumple esta promesa se crea el usuario
+        }),
+       model.alumno.create({
+            dni: req.body.dni,
+            nombre: req.body.nombre,
+            apellido: req.body.apellido}
+
+        ).then(user => { //si se cumple esta promesa se crea los usuarios
 
             // Creamos el token
             let token = jwt.sign({ user: user }, authConfig.secret, {
                 expiresIn: authConfig.expiresIn
-            });
+                }
+            );
 
             res.json({
                 user: user,
@@ -74,7 +79,7 @@ module.exports = {
 
         }).catch(err => {
           //console.log("Error al crear usuario");
-            res.status(500).json({ msg: "Error al crear usuario", err: err })
+            res.status(500).json({ msg: "Error al crear usuarios", err: err })
             
         });
     }

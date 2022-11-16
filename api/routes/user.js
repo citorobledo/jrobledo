@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 });
 
 // Dos rutas: login y registro
-router.post('/signin', AuthController.signIn);
+router.post('/signin', middleware.verifyToken, AuthController.signIn);
 
 router.post('/signup', AuthController.signUp);
 

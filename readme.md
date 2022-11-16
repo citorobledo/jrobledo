@@ -398,4 +398,14 @@ npm install bcrypt
 npm install jsonwebtoken
 
 ```
+## Seed para la siembra en la base de datos:
+```sh
+npm i faker
+npx sequelize-cli seed:generate --name alumnos
+npx sequelize-cli db:seed:all
+npx sequelize-cli db:seed:undo:all
+npx sequelize-cli db:seed:undo --seed "20221115125011-create-alumnos" <= (nombre del archivo de la siembra)
+```
+
+```
 </h3> 
